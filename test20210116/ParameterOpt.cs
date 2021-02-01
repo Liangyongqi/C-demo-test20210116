@@ -97,12 +97,13 @@ namespace test20210116
 
             for (int i = 0; i < N - 1; i++)
             {
-                Console.WriteLine(stationNameArray[i] + "的管径和壁厚： " + structureParamList[pipeArray[i]].diameter + " " + structureParamList[pipeArray[i]].thickness + " 费用： "+priceArray[i]);
+                Console.WriteLine(i + "： " + stationNameArray[i] + "的管径和壁厚： " + structureParamList[pipeArray[i]].diameter + " " + structureParamList[pipeArray[i]].thickness + " 费用： "+priceArray[i]);
                 final_price += priceArray[i];
             }
             Console.WriteLine("总费用： " + final_price);
 
-
+            //Console.WriteLine("李智慧公式可研干线压力值： " + getP1(4.5, 273, 4800, 300));
+            Console.WriteLine("李智慧公式可研干线压力值： " + getP1(4.5, 195, 4800, 300));
 
 
         }
