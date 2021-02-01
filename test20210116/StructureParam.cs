@@ -17,10 +17,6 @@
             this.strength = strength;
         }
 
-        //public void setParam(double diameter, double thickness)
-        //{
-        //    this.diameter = diameter;
-        //    this.thickness = thickness;
-        //}
+
     }
 }

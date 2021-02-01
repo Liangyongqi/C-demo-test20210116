@@ -160,7 +160,7 @@ namespace test20210116
         public double getP1(double p2, double q1, double L, double d)
         {
             double temp;
-            double lamda = 0.009588* Math.Pow(d , -0.2);
+            double lamda = 0.009588* Math.Pow(d / 100, -0.2);
             double Z = 0.793;
             double delt = 0.593;
             double T = 293;
@@ -171,42 +171,26 @@ namespace test20210116
             double C0 = 0.03848;
             //q1 = q1 / 24 / 60 / 60;
 
-            //师兄比赛参数
-            delt = 0.5548;
-            Z = 0.85;
-            T = 293;
+            ////师兄比赛参数
+            //delt = 0.5548;
+            //Z = 0.85;
+            //T = 293;
 
 
 
             //temp = Math.Pow(q1 / 1051.0, 2) * (lamda * Z * delt * T * L * (1 + alpha / (2 * L) * (h2 + h1) * L)) / Math.Pow(d, 5) + Math.Pow(p2, 2) * (1 + alpha * delth);
             //temp = Math.Pow(q1 / 1051.0, 2) * (xishu * L) / Math.Pow(d, 5) + Math.Pow(p2, 2) * (1 + alfa * delth);
-            //temp = Math.Pow(p2, 2) + lamda * Z * delt * T / (Math.Pow(C0, 2) * Math.Pow(d, 5)) * L * Math.Pow(q1, 2);
+            temp = Math.Pow(p2*1000, 2) + lamda * Z * delt * T / (Math.Pow(C0, 2) * Math.Pow(d / 100, 5)) * L * Math.Pow(q1 * 10000/24/3600, 2);
             //double t1 = lamda * Z * delt * T;
             //double t2= Math.Pow(C0, 2) * Math.Pow(d, 5);
             //double t3 = L * Math.Pow(q1, 2);
             //double t4 = lamda * Z * delt * T / (Math.Pow(C0, 2) * Math.Pow(d, 5)) * L * Math.Pow(q1, 2);
-            temp = Math.Pow(p2, 2) +  Z * delt * T  * (L/1000) * Math.Pow((q1*10000/5033.11/ Math.Pow(d/10, 8/3)), 2);
-            p1 = System.Math.Sqrt(temp);//开根号
+
+            ////师兄公式
+            //temp = Math.Pow(p2, 2) + Z * delt * T * (L / 1000) * Math.Pow((q1 * 10000 / 5033.11 / Math.Pow(d / 10, 8 / 3)), 2);
+            p1 = System.Math.Sqrt(temp)/1000;//开根号
             return p1;
         }
-        //public double getPrice(double unitPrice)
-        //{
-        //    double totalPrice=0;
-        //    totalPrice=
-        //    return totalPrice;
-        //}
-        public double getxishu(double p1, double p2, double q1, double L, double d)
-        {
-            double
-            xishu = (Math.Pow(p1, 2) - Math.Pow(p2, 2)) * Math.Pow(d, 5) / Math.Pow(q1 / 1051, 2) / L;
-            return xishu;
-        }
-        public double test(double p1, double p2, double q1, double L, double d)
-        {
-            double canshu = 1;
-            double testq = 0;
-            testq = 5033.11 * Math.Pow(d, 8 / 3) * Math.Sqrt((Math.Pow(p1, 2) - Math.Pow(p2, 2)) / (canshu));
-            return testq;
-        }
+       
     }
 }
