@@ -7,7 +7,8 @@ namespace test20210116
     {
         const int N = 9;//站点数量
         string[] stationNameArray = new string[N] { "194", "195", "196", "197", "198", "199", "200", "201", "脱水站", };
-        int[] wellNum = new int[N] { 3, 5, 1, 6, 3, 3, 2, 3, 0 };//井式
+        //int[] wellNum = new int[N] { 3, 5, 1, 6, 3, 3, 2, 3, 0 };//井式
+        int[] wellNum = new int[N] { 4, 6, 4, 6, 6, 3, 2, 4, 0 };//井式
         double[] qDesignArray = new Double[N];//设计输气量
         double[] qCalculateArray = new Double[N];//计算输气量
         double[] qleijiaArray = new Double[N];//累加输气量
@@ -45,9 +46,10 @@ namespace test20210116
             //structureParamList.Add(new StructureParam(219, 7, 6.3, 7953.448));
             //structureParamList.Add(new StructureParam(168, 6.5, 6.3, 8345.584));
             //structureParamList.Add(new StructureParam(76, 12, 6.3, 7941.372));
-            structureParamList.Add(new StructureParam(76, 12, 42, 8067.241, 360));
-            structureParamList.Add(new StructureParam(76, 4, 42, 7953.448, 360));
-            structureParamList.Add(new StructureParam(89, 5, 42, 8345.584, 360));
+
+            //structureParamList.Add(new StructureParam(76, 12, 42, 8067.241, 360));
+            //structureParamList.Add(new StructureParam(76, 4, 42, 7953.448, 360));
+            //structureParamList.Add(new StructureParam(89, 5, 42, 8345.584, 360));
             structureParamList.Add(new StructureParam(114.3, 5, 6.3, 7941.372, 360));
             structureParamList.Add(new StructureParam(168, 6.5, 6.3, 8067.241, 360));
             structureParamList.Add(new StructureParam(168.3, 7.11, 6.3, 7953.448, 360));
@@ -56,6 +58,9 @@ namespace test20210116
             structureParamList.Add(new StructureParam(323.9, 9, 6.3, 8067.241, 360));
             structureParamList.Add(new StructureParam(323.9, 10, 6.3, 7953.448, 360));
 
+            structureParamList.Add(new StructureParam(323.9, 8, 6.3, 6800, 360));
+            structureParamList.Add(new StructureParam(168, 6.5, 6.3, 6600, 360));
+            //structureParamList.Add(new StructureParam(76, 10, 42, 6400, 360));
 
 
 
@@ -93,7 +98,7 @@ namespace test20210116
             }
 
             //获取所有符合条件的管道参数。
-            getPipeParam(8, p2);//计算压力公式
+            getPipeParam(N-1, p2);//计算压力公式
 
             for (int i = 0; i < N - 1; i++)
             {
@@ -103,8 +108,11 @@ namespace test20210116
             Console.WriteLine("总费用： " + final_price);
 
             //Console.WriteLine("李智慧公式可研干线压力值： " + getP1(4.5, 273, 4800, 300));
-            Console.WriteLine("李智慧公式可研干线压力值： " + getP1(4.5, 195, 4800, 300));
-
+            //Console.WriteLine("李智慧公式可研干线压力值： " + getP1(4.5, 195, 4800, 300));
+            //Console.WriteLine("李智慧公式可研干线压力值： " + getP1(4.5, 273, 4800, 168));
+            //Console.WriteLine("李智慧公式可研干线压力值： " + getP1(4.5, 261.95, 4800, 168));
+            //Console.WriteLine("323.9真实承压能力： " + (8 - 1) * (2 * 360 * 1 * 0.5 * 1) / 323.9);
+            //Console.WriteLine("168真实承压能力： " + (6.5 - 1) * (2 * 360 * 1 * 0.5 * 1) / 168);
 
         }
         //递归获取某个节点的流量。
@@ -144,6 +152,7 @@ namespace test20210116
                     {
                         p1 = getP1(p2, qleijiaArray[i], distance[i, j], item.diameter - 2 * item.thickness);
                         double totalPrice = (item.diameter - item.thickness) * item.thickness * 0.02466 * distance[i, j]*0.001 * item.price;
+                        //double totalPrice = 3.1415926*(Math.Pow((item.diameter/ 2*0.001), 2)-Math.Pow(((item.diameter - 2*item.thickness)*0.001/2),2)) * distance[i, j] *7.85*0.001* item.price;
                         if ((item.standardPressure > p1) && (totalPrice <= pipePrice))
                         {
                             pipeArray[i] = structureParamList.IndexOf(item);
@@ -161,7 +170,7 @@ namespace test20210116
         public double getP1(double p2, double q1, double L, double d)
         {
             double temp;
-            double lamda = 0.009588* Math.Pow(d / 100, -0.2);
+            double lamda = 0.009588* Math.Pow(d / 1000, -0.2);
             double Z = 0.793;
             double delt = 0.593;
             double T = 293;
@@ -181,7 +190,7 @@ namespace test20210116
 
             //temp = Math.Pow(q1 / 1051.0, 2) * (lamda * Z * delt * T * L * (1 + alpha / (2 * L) * (h2 + h1) * L)) / Math.Pow(d, 5) + Math.Pow(p2, 2) * (1 + alpha * delth);
             //temp = Math.Pow(q1 / 1051.0, 2) * (xishu * L) / Math.Pow(d, 5) + Math.Pow(p2, 2) * (1 + alfa * delth);
-            temp = Math.Pow(p2*1000, 2) + lamda * Z * delt * T / (Math.Pow(C0, 2) * Math.Pow(d / 100, 5)) * L * Math.Pow(q1 * 10000/24/3600, 2);
+            temp = Math.Pow(p2*1000000, 2) + lamda * Z * delt * T / (Math.Pow(C0, 2) * Math.Pow(d / 1000, 5)) * L * Math.Pow(q1 * 10000/24/3600, 2);
             //double t1 = lamda * Z * delt * T;
             //double t2= Math.Pow(C0, 2) * Math.Pow(d, 5);
             //double t3 = L * Math.Pow(q1, 2);
@@ -189,7 +198,7 @@ namespace test20210116
 
             ////师兄公式
             //temp = Math.Pow(p2, 2) + Z * delt * T * (L / 1000) * Math.Pow((q1 * 10000 / 5033.11 / Math.Pow(d / 10, 8 / 3)), 2);
-            p1 = System.Math.Sqrt(temp)/1000;//开根号
+            p1 = System.Math.Sqrt(temp)/ 1000000;//开根号
             return p1;
         }
        
